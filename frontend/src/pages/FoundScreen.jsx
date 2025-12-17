@@ -1,13 +1,27 @@
-"use client"
+"use client";
 
-import { useEffect, useState, useRef } from "react"
-import axios from "axios"
-import config from "../../config"
-import { useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
-import { Search, Filter, HelpCircle, Package, Eye, User, Upload, ShoppingBag, MapPin, Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import config from "../../config";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import {
+  Search,
+  Filter,
+  HelpCircle,
+  Package,
+  Eye,
+  User,
+  Upload,
+  ShoppingBag,
+  MapPin,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
-const categories = ["Books", "Electronics", "Stationery", "Clothing", "Others"]
+const categories = ["Books", "Electronics", "Stationery", "Clothing", "Others"];
 
 // Sidebar Component
 function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
@@ -15,7 +29,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
     <>
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/20 z-40 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)}></div>
+        <div
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden backdrop-blur-sm"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
       )}
 
       {/* Sidebar */}
@@ -28,12 +45,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+              <div
+                className="flex items-center space-x-3 cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-600 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
                   <ShoppingBag className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent tracking-tight">
-                  WALCHAND MART
+                  PCCOE MART
                 </span>
               </div>
               <button
@@ -87,7 +107,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600 text-sm">Items Found:</span>
-                <span className="text-violet-600 font-semibold bg-violet-50 px-2 py-1 rounded-full text-sm">{itemsCount}</span>
+                <span className="text-violet-600 font-semibold bg-violet-50 px-2 py-1 rounded-full text-sm">
+                  {itemsCount}
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600 text-sm">Status:</span>
@@ -98,7 +120,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600 text-sm">Recovery:</span>
-                <span className="text-blue-600 font-semibold bg-blue-50 px-2 py-1 rounded-full text-sm">📍 Campus</span>
+                <span className="text-blue-600 font-semibold bg-blue-50 px-2 py-1 rounded-full text-sm">
+                  📍 Campus
+                </span>
               </div>
             </div>
           </div>
@@ -106,44 +130,50 @@ function Sidebar({ sidebarOpen, setSidebarOpen, navigate, itemsCount }) {
           {/* Help Section */}
           <div className="mt-6 p-3 bg-white/60 backdrop-blur-sm border border-violet-200/40 rounded-lg text-center">
             <div className="text-2xl mb-2">🔍</div>
-            <div className="text-xs font-semibold text-gray-700">Lost & Found Hub</div>
+            <div className="text-xs font-semibold text-gray-700">
+              Lost & Found Hub
+            </div>
             <div className="text-xs text-gray-600">Reuniting belongings</div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
 // Pagination Component
 function Pagination({ currentPage, totalPages, onPageChange }) {
   const getVisiblePages = () => {
-    const delta = 2
-    const range = []
-    const rangeWithDots = []
-    
-    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
-      range.push(i)
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
+      range.push(i);
     }
 
     if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...')
+      rangeWithDots.push(1, "...");
     } else {
-      rangeWithDots.push(1)
+      rangeWithDots.push(1);
     }
 
-    rangeWithDots.push(...range)
+    rangeWithDots.push(...range);
 
     if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages)
+      rangeWithDots.push("...", totalPages);
     } else {
-      rangeWithDots.push(totalPages)
+      rangeWithDots.push(totalPages);
     }
 
-    return rangeWithDots
-  }
+    return rangeWithDots;
+  };
 
-  if (totalPages <= 1) return null
+  if (totalPages <= 1) return null;
 
   return (
     <div className="flex items-center justify-center space-x-2 mt-8">
@@ -157,15 +187,15 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
       {getVisiblePages().map((page, index) => (
         <div key={index}>
-          {page === '...' ? (
+          {page === "..." ? (
             <span className="px-3 py-2 text-gray-500">...</span>
           ) : (
             <button
               onClick={() => onPageChange(page)}
               className={`px-3 py-2 rounded-lg font-medium transition-all duration-200 backdrop-blur-sm ${
                 currentPage === page
-                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg'
-                  : 'bg-white/80 hover:bg-white border border-violet-200/60 hover:border-violet-300 text-gray-700 hover:text-gray-900'
+                  ? "bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg"
+                  : "bg-white/80 hover:bg-white border border-violet-200/60 hover:border-violet-300 text-gray-700 hover:text-gray-900"
               }`}
             >
               {page}
@@ -182,89 +212,91 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         <ChevronRight className="w-4 h-4" />
       </button>
     </div>
-  )
+  );
 }
 
 // Main Found Component
 export default function Found() {
-  const [allItems, setAllItems] = useState([])
-  const [displayedItems, setDisplayedItems] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [category, setCategory] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(9) // 3x3 grid
-  const debounceRef = useRef(null)
-  const navigate = useNavigate()
+  const [allItems, setAllItems] = useState([]);
+  const [displayedItems, setDisplayedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [category, setCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9); // 3x3 grid
+  const debounceRef = useRef(null);
+  const navigate = useNavigate();
 
   // Pagination logic
   useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage
-    const endIndex = startIndex + itemsPerPage
-    setDisplayedItems(allItems.slice(startIndex, endIndex))
-  }, [allItems, currentPage, itemsPerPage])
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setDisplayedItems(allItems.slice(startIndex, endIndex));
+  }, [allItems, currentPage, itemsPerPage]);
 
-  const totalPages = Math.ceil(allItems.length / itemsPerPage)
+  const totalPages = Math.ceil(allItems.length / itemsPerPage);
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const checkAuthAndFetch = async (apiCall) => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("Authorization token missing or invalid")
-      navigate("/")
-      return null
+      toast.error("Authorization token missing or invalid");
+      navigate("/");
+      return null;
     }
 
     try {
-      const response = await apiCall(token)
-      return response
+      const response = await apiCall(token);
+      return response;
     } catch (err) {
       if (err.response?.status === 401) {
-        localStorage.removeItem("token")
-        const errorMsg = err.response?.data?.msg || "Invalid or expired token"
-        toast.error(errorMsg)
-        navigate("/")
-        return null
+        localStorage.removeItem("token");
+        const errorMsg = err.response?.data?.msg || "Invalid or expired token";
+        toast.error(errorMsg);
+        navigate("/");
+        return null;
       }
-      throw err
+      throw err;
     }
-  }
+  };
 
   const fetchAllItems = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await checkAuthAndFetch((token) =>
         axios.get(`${config.BASE_URL}${config.GET_ALL_FOUND}`, {
           headers: { Authorization: `Bearer ${token}` },
-        }),
-      )
+        })
+      );
       if (response) {
-        setAllItems(Array.isArray(response.data.data) ? response.data.data : [])
-        setCurrentPage(1)
-        setError("")
+        setAllItems(
+          Array.isArray(response.data.data) ? response.data.data : []
+        );
+        setCurrentPage(1);
+        setError("");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong")
-      toast.error(err.response?.data?.message || "Something went wrong")
+      setError(err.response?.data?.message || "Something went wrong");
+      toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleCategoryFilter = async (selectedCategory) => {
-    setCategory(selectedCategory)
+    setCategory(selectedCategory);
     if (!selectedCategory) {
-      fetchAllItems()
-      return
+      fetchAllItems();
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await checkAuthAndFetch((token) =>
         axios.post(
@@ -272,30 +304,30 @@ export default function Found() {
           { category: selectedCategory },
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
-        ),
-      )
+          }
+        )
+      );
       if (response) {
-        setAllItems(Array.isArray(response.data) ? response.data : [])
-        setCurrentPage(1)
-        setError("")
+        setAllItems(Array.isArray(response.data) ? response.data : []);
+        setCurrentPage(1);
+        setError("");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Filter failed")
-      toast.error(err.response?.data?.message || "Filter failed")
+      setError(err.response?.data?.message || "Filter failed");
+      toast.error(err.response?.data?.message || "Filter failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleLiveSearch = async (query) => {
     if (!query.trim()) {
-      if (category) handleCategoryFilter(category)
-      else fetchAllItems()
-      return
+      if (category) handleCategoryFilter(category);
+      else fetchAllItems();
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await checkAuthAndFetch((token) =>
         axios.post(
@@ -303,39 +335,41 @@ export default function Found() {
           { query },
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
-        ),
-      )
+          }
+        )
+      );
       if (response) {
-        setAllItems(Array.isArray(response.data.data) ? response.data.data : [])
-        setCurrentPage(1)
-        setError("")
+        setAllItems(
+          Array.isArray(response.data.data) ? response.data.data : []
+        );
+        setCurrentPage(1);
+        setError("");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Search failed")
-      toast.error(err.response?.data?.message || "Search failed")
+      setError(err.response?.data?.message || "Search failed");
+      toast.error(err.response?.data?.message || "Search failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("Authorization token missing or invalid")
-      navigate("/")
-      return
+      toast.error("Authorization token missing or invalid");
+      navigate("/");
+      return;
     }
-    fetchAllItems()
-  }, [navigate])
+    fetchAllItems();
+  }, [navigate]);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      handleLiveSearch(searchQuery)
-    }, 1000)
-    return () => clearTimeout(debounceRef.current)
-  }, [searchQuery])
+      handleLiveSearch(searchQuery);
+    }, 1000);
+    return () => clearTimeout(debounceRef.current);
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-blue-50 text-gray-900 font-sans relative overflow-hidden">
@@ -350,11 +384,11 @@ export default function Found() {
 
       <div className="flex min-h-screen relative z-10">
         {/* Sidebar */}
-        <Sidebar 
-          sidebarOpen={sidebarOpen} 
-          setSidebarOpen={setSidebarOpen} 
-          navigate={navigate} 
-          itemsCount={allItems.length} 
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          navigate={navigate}
+          itemsCount={allItems.length}
         />
 
         {/* Main content */}
@@ -370,8 +404,12 @@ export default function Found() {
                   <Menu className="w-5 h-5 text-gray-600" />
                 </button>
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Lost & Found Center</h1>
-                  <p className="text-gray-600 text-sm sm:text-base">Help reunite students with their belongings</p>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                    Lost & Found Center
+                  </h1>
+                  <p className="text-gray-600 text-sm sm:text-base">
+                    Help reunite students with their belongings
+                  </p>
                 </div>
               </div>
               <button
@@ -420,11 +458,15 @@ export default function Found() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
                 <MapPin className="w-6 h-6 text-violet-500 mr-3" />
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Found Items</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Found Items
+                </h2>
               </div>
               {!loading && (
                 <div className="text-right">
-                  <span className="text-gray-500 text-sm">{allItems.length} items found</span>
+                  <span className="text-gray-500 text-sm">
+                    {allItems.length} items found
+                  </span>
                   {totalPages > 1 && (
                     <div className="text-xs text-gray-400 mt-1">
                       Page {currentPage} of {totalPages}
@@ -447,13 +489,20 @@ export default function Found() {
               </div>
             )}
 
-            {!loading && !error && Array.isArray(allItems) && allItems.length === 0 && (
-              <div className="text-center py-12">
-                <HelpCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 text-lg font-medium">No items found</p>
-                <p className="text-gray-500 text-sm">Try adjusting your search or check back later</p>
-              </div>
-            )}
+            {!loading &&
+              !error &&
+              Array.isArray(allItems) &&
+              allItems.length === 0 && (
+                <div className="text-center py-12">
+                  <HelpCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 text-lg font-medium">
+                    No items found
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Try adjusting your search or check back later
+                  </p>
+                </div>
+              )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {displayedItems.map((item) => (
@@ -477,8 +526,12 @@ export default function Found() {
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">{item.name}</h3>
-                    <p className="text-gray-600 mb-3 line-clamp-2 text-sm">{item.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+                      {item.name}
+                    </h3>
+                    <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
+                      {item.description}
+                    </p>
 
                     <div className="flex items-center justify-between mb-4">
                       <span className="px-3 py-1 bg-violet-100 text-violet-700 text-xs font-medium rounded-full border border-violet-200">
@@ -489,14 +542,19 @@ export default function Found() {
                     {item.finder && (
                       <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
                         <p className="text-gray-700 text-sm">
-                          <span className="text-gray-500">Found by:</span> {item.finder.name}
+                          <span className="text-gray-500">Found by:</span>{" "}
+                          {item.finder.name}
                         </p>
-                        <p className="text-gray-500 text-xs">{item.finder.email}</p>
+                        <p className="text-gray-500 text-xs">
+                          {item.finder.email}
+                        </p>
                       </div>
                     )}
 
                     <button
-                      onClick={() => navigate("/found/details", { state: { id: item._id } })}
+                      onClick={() =>
+                        navigate("/found/details", { state: { id: item._id } })
+                      }
                       className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium rounded-xl transition-all duration-300 shadow-lg hover:shadow-violet-500/20 transform hover:scale-[1.02] active:scale-95 group"
                     >
                       <Eye className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform duration-200" />
@@ -508,7 +566,7 @@ export default function Found() {
             </div>
 
             {/* Pagination */}
-            <Pagination 
+            <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
@@ -531,7 +589,7 @@ export default function Found() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
         }
-        
+
         @media (prefers-reduced-motion: reduce) {
           .animate-pulse {
             animation: none;
@@ -539,5 +597,5 @@ export default function Found() {
         }
       `}</style>
     </div>
-  )
+  );
 }
