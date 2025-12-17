@@ -56,70 +56,16 @@
 - **College Email Validation** - Restricted access control
 - **Password Encryption** - Secure credential storage
 
-## 🚀 Run Locally
+## 📸 Screenshots
+![Home Screen](<frontend/public/Screenshot from 2025-09-28 19-40-36.png>)
+![Marketplace](<frontend/public/Screenshot from 2025-09-28 19-41-09.png>)
+![Login](<frontend/public/Screenshot from 2025-09-28 19-39-35.png>)
+![Signup](<frontend/public/Screenshot from 2025-09-28 19-39-41.png>)
+![Dashboard](<frontend/public/Screenshot from 2025-09-28 19-39-48.png>)
 
-Follow these steps to run the project on your local machine.
+## 📋 Requirements
 
-### Prerequisites
 - **Node.js** (v16 or higher)
-- **MongoDB** (Ensure it is running locally or have a MongoDB Atlas connection string)
-- **Git**
-
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/yourusername/pccoe-mart.git](https://github.com/yourusername/pccoe-mart.git)
-cd pccoe-mart
-2. Backend Setup
-Navigate to the backend directory and install dependencies:
-
-Bash
-
-cd backend
-npm install
-Create a .env file in the backend folder and add the following variables:
-
-Code snippet
-
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-EMAIL_USER=your_email_address_for_otp
-EMAIL_PASS=your_email_app_password
-# Add AWS S3 variables if using cloud storage for images
-Start the backend server:
-
-Bash
-
-npm run dev
-# or
-npm start
-The server should be running on http://localhost:5000.
-
-3. Frontend Setup
-Open a new terminal, navigate to the frontend directory, and install dependencies:
-
-Bash
-
-cd frontend
-npm install
-Create a .env file (or update config.js if applicable) to point to your local backend:
-
-Code snippet
-
-VITE_API_URL=http://localhost:5000/api
-Start the frontend application:
-
-Bash
-
-npm run dev
-Open the link provided in the terminal (usually http://localhost:5173) to view the application.
-
-📸 Screenshots
-📋 Requirements
-Node.js (v16 or higher)
-
-MongoDB (local installation or MongoDB Atlas)
-
-College Email Account (for testing registration)
-
-SMTP Email Service (Gmail App Password recommended for OTP delivery)
+- **MongoDB** (local installation or MongoDB Atlas)
+- **College Email Account** (for testing registration)
+- **SMTP Email Service** (Gmail App Password recommended for OTP delivery)
