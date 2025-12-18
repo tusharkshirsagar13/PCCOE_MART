@@ -3,7 +3,7 @@
 **PCCOE MART** is a comprehensive campus marketplace platform designed specifically for **Pimpri Chinchwad College of Engineering (PCCOE)** students to facilitate secure buying, selling, and lost-and-found item management within the campus community. Built with modern web technologies, the platform creates a trusted environment for student-to-student transactions.
 
 ## 🔗 Live Demo
-[Link to Live Demo]([https://your-demo-link-here.com](https://pccoe-mart-frontend.onrender.com/))
+[Link to Live Demo](https://pccoe-mart-frontend.onrender.com/)
 
 ## ✨ Features
 
