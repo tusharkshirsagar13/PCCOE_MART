@@ -23,7 +23,7 @@ export const sendOtp = async (req: Request, res: Response) => {
 
   try {
     await transporter.sendMail({
-      from: "PCCOE Mart <kshirsagartushar9540@gmail.com>",
+      from: `PCCOE Mart <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Your OTP for PCCOE Mart Signup",
       text: `Your OTP is ${otp}. It expires in 5 minutes.`,
