@@ -1,65 +1,25 @@
-// import nodemailer from "nodemailer";
-// import dotenv from "dotenv";
-// dotenv.config();
-
-// export const transporter = nodemailer.createTransport({
-//   service: "Gmail",
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS,
-//   },
-// });
-
-// import nodemailer from "nodemailer";
-// import dotenv from "dotenv";
-
-// dotenv.config();
-
-// const transporter = nodemailer.createTransport({
-//   service: "gmail", // Use 'gmail' service which automatically sets host
-//   host: "smtp.gmail.com",
-//   port: 587, // Use port 587 instead of 465
-//   secure: false, // false for port 587 (uses STARTTLS)
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS,
-//   },
-//   tls: {
-//     rejectUnauthorized: false, // Helps avoid some certificate issues on cloud servers
-//   },
-// });
-
-// export default transporter;
-
-// import nodemailer from "nodemailer";
-// import dotenv from "dotenv";
-
-// dotenv.config();
-
-// export const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   host: "smtp.gmail.com",
-//   port: 587,
-//   secure: false,
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS,
-//   },
-//   tls: {
-//     rejectUnauthorized: false,
-//   },
-// });
-
+import "dotenv/config";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-dotenv.config();
+import { z } from "zod";
 
 export const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com", // Brevo's SMTP Server
-  port: 2525, // Port 2525 is usually open on Render Free Tier
-  secure: false, // Must be false for port 2525
+  host: "smtp-relay.brevo.com",
+  port: 2525,
+  secure: false,
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 20000,
   auth: {
-    user: process.env.EMAIL_USER, // Your Brevo Login Email
-    pass: process.env.EMAIL_PASS, // Your Brevo SMTP Key
+    user: process.env.EMAIL_USER?.trim(),
+    pass: process.env.EMAIL_PASS?.trim(),
   },
 });
+
+export function getOtpSender() {
+  // Brevo's generated SMTP login is an authentication identity, not a sender.
+  const sender = (process.env.EMAIL_FROM || process.env.EMAIL_USER || "").trim();
+  if (!z.string().email().safeParse(sender).success || sender.endsWith("@smtp-brevo.com")) {
+    throw new Error("Set EMAIL_FROM to a verified Brevo sender email address.");
+  }
+  return { name: "PCCOE Mart", address: sender };
+}

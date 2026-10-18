@@ -110,3 +110,17 @@ cover password verification, JWTs, protected account access, listing reads,
 database outages, and initial connection recovery. They never seed or reset
 production accounts. Run `npm install && npm run build` in `frontend` to verify
 the production frontend build.
+
+
+### Brevo signup email configuration
+
+Set `EMAIL_USER` to the exact **SMTP login** displayed by Brevo, `EMAIL_PASS` to an
+active **SMTP key** (not an API key or account password), and `EMAIL_FROM` to a
+verified sender email. The SMTP login may end in `@smtp-brevo.com`; that login
+must not be used as the email's From address. A verified legacy EMAIL_USER address
+continues to work as the sender if EMAIL_FROM is absent.
+
+If Brevo enforces an authorized-IP list, authorize the Render service's outbound
+IP addresses in Brevo. SMTP error 535 means the provider rejected authentication;
+check the login, active SMTP key, and provider security restrictions. Do not change
+SMTP ports or disable TLS verification as a workaround for rejected credentials.
