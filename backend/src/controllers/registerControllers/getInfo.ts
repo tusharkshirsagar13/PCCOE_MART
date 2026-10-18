@@ -10,7 +10,7 @@ export const getInfo = async (req: Request & { userId?: string }, res: Response)
       return res.status(400).json({ message: "User ID is missing" });
     }
 
-    const userData = await UserModel.findById(userId);
+    const userData = await UserModel.findById(userId).select("-password");
 
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
