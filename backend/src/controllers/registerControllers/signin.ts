@@ -9,22 +9,15 @@ const signinSchema = z.object({
     password: z.string().min(1, "Password is required"),
 });
 
-
 export const signin = async (req: Request, res: Response) => {
-
-    // console.log(req.body);
 
     const parsed = signinSchema.safeParse(req.body);
 
-    console.log(parsed);
-
-    // console.log(parsed);
     if (!parsed.success) {
         return res.status(400).json({ msg: parsed.error.issues[0].message });
     }
 
     const { email, password } = parsed.data;
-
 
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -40,8 +33,6 @@ export const signin = async (req: Request, res: Response) => {
         { userId: user._id },
         process.env.JWT_SECRET as string
     );
-
-    // console.log(token);
 
     return res.status(200).json({
         msg: "Signin successful",

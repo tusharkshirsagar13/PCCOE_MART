@@ -70,3 +70,43 @@
 - **MongoDB** (local installation or MongoDB Atlas)
 - **College Email Account** (for testing registration)
 - **SMTP Email Service** (Gmail App Password recommended for OTP delivery)
+
+
+## Backend deployment and database recovery
+
+The backend requires `DB_URL` and `JWT_SECRET` in its environment. Keep the existing
+JWT secret when redeploying so existing tokens continue to verify. `DB_URL` must
+be the Atlas **Connect → Drivers** URI for the original database, including its
+existing database name and database-user credentials. Do not commit credentials.
+
+The October 18, 2026 failure was `querySrv ENOTFOUND
+_mongodb._tcp.cluster0.f9jedrs.mongodb.net`: DNS resolution failed before MongoDB
+could authenticate. The original unhandled connection promise terminated Node.
+The backend now catches initial connection failures and retries every 10 seconds.
+While MongoDB is disconnected, `/api/v1` returns HTTP 503 with a JSON message
+instead of buffering requests; `/health` returns 503 until MongoDB connects,
+then 200. Initial configuration errors still fail with a clear message.
+
+To restore the deployment:
+
+1. In Atlas, check the original cluster. Resume it if paused. If its address has
+   changed, update Render's `DB_URL` using the exact current Drivers URI and keep
+   the original database name. A replacement empty cluster does not contain the
+   existing accounts or listings; restore the original data before testing login.
+2. Once DNS resolves, verify the existing database user and Atlas network access
+   permit the backend to connect. Do not substitute a different DNS hostname or
+   change the URI scheme as a workaround for a missing cluster.
+3. Render backend: root directory `backend`, build command `npm install && npm run
+   build`, start command `npm start`, health check path `/health`.
+4. The frontend's `VITE_API_URL` must be the backend's HTTPS origin (without
+   `/api/v1`); rebuild the frontend after changing this Vite build-time setting.
+5. Confirm `Connected to MongoDB` in Render logs, HTTP 200 from `/health`, then
+   test the existing account through `/api/v1/signin` and authenticated
+   `/api/v1/info`. Sign-in does not depend on SMTP or S3 configuration.
+
+Run `npm install` and `npm test` in `backend` for integration tests against an
+isolated MongoDB process. The first run downloads a MongoDB test binary. Tests
+cover password verification, JWTs, protected account access, listing reads,
+database outages, and initial connection recovery. They never seed or reset
+production accounts. Run `npm install && npm run build` in `frontend` to verify
+the production frontend build.
